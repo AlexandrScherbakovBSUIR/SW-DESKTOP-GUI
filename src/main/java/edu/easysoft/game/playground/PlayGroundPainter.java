@@ -1,12 +1,17 @@
 package edu.easysoft.game.playground;
 
+import edu.easysoft.game.tablet.Card;
+import edu.easysoft.game.tablet.Tablet;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HexagonPainter extends JPanel {
+public class PlayGroundPainter extends JPanel {
     int hexagonSize = 30;
+    boolean tableVisibility;
+    private Tablet tablet = new Tablet();
     Map<Point,Hexagon> hexagonMap = new HashMap<Point,Hexagon>();
     public static double sin60 = Math.sin(Math.toRadians(60));
     public static double cos60 = Math.cos(Math.toRadians(60));
@@ -42,12 +47,13 @@ public class HexagonPainter extends JPanel {
             }
             x = (int)( x + 2*(hexagonSize +Math.round(hexagonSize *cos60)));
         }
+        graphic2d.setColor(Color.darkGray);
         for (Point point: hexagonMap.keySet()) {
             if(hexagonMap.get(point).isSelected()){
-                graphic2d.fillOval((int) (point.getX()-getHexagonSize()*HexagonPainter.cos60)+5,
+                graphic2d.fillOval((int) (point.getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
                         (int)point.getY()+5,
-                        (int) (getHexagonSize()*(2*HexagonPainter.cos60+1))-10,
-                        (int) ( 2 * getHexagonSize()*HexagonPainter.sin60)-10);
+                        (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
+                        (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
             }
 
         }
@@ -142,6 +148,41 @@ public class HexagonPainter extends JPanel {
 
 
     }
+    public Point findMovedCell(Point point){
+        int difX=0;
+        int difY=0;
+        int x =  0;
+        int y =  0;
+
+
+        for (Point iterPoint:hexagonMap.keySet()) {
+
+            //middle area
+            if(point.getX()>=iterPoint.getX()&&
+                    point.getX()<=iterPoint.getX() + hexagonSize &&
+                    point.getY()>=iterPoint.getY()
+                    && point.getY()<=iterPoint.getY()+ 2 * sin60*hexagonSize){
+                hexagonMap.get(iterPoint).setMouseMoved(true);
+
+                return iterPoint;
+            }
+            //left area
+            if(point.getX() >= iterPoint.getX() -cos60*hexagonSize &&
+                    point.getX() <= iterPoint.getX() &&
+                    point.getY() >= iterPoint.getY() &&
+                    point.getY() <= iterPoint.getY() + 2*sin60*hexagonSize ) {
+                hexagonMap.get(iterPoint).setMouseMoved(true);
+
+                return iterPoint;
+            }
+
+
+        }
+
+        return null;
+
+
+    }
 
     public int getHexagonSize() {
         return hexagonSize;
@@ -160,7 +201,7 @@ public class HexagonPainter extends JPanel {
 
     public void generateTemplate() {
         for (Hexagon hexagon:hexagonMap.values()) {
-            if(Math.random()< 0.2){
+            if(Math.random()< 0.15){
                 hexagon.setSelected(true);
             }else{
                 hexagon.setSelected(false);
@@ -169,5 +210,46 @@ public class HexagonPainter extends JPanel {
 
         }
         super.repaint();
+    }
+
+    public void showTablet() {
+
+        //todo: store tablet as field, create their oun class to process tablet
+        this.remove(tablet);
+
+
+
+
+        tablet.setSize(new Dimension(600,400));
+        tablet.setVisible(revertVisibility(tableVisibility));
+        tablet.setBackground(Color.getHSBColor(100,100,100));
+        tablet.setLocation(100,100);
+
+        for (Card card : tablet.getCardList()) {
+            //card.add(new JLabel(new ImageIcon("./src/main/resources/image/card/card_0.png","description of card 0")));
+
+            tablet.add(card);
+
+        }
+
+        this.add(tablet);
+
+
+        super.repaint();
+
+    }
+    public boolean revertVisibility(boolean visible){
+        this.tableVisibility = ! visible;
+        System.out.println(this.tableVisibility);
+
+        return this.tableVisibility;
+    }
+
+    public boolean isTableVisibility() {
+        return tableVisibility;
+    }
+
+    public void setTableVisibility(boolean tableVisibility) {
+        this.tableVisibility = tableVisibility;
     }
 }

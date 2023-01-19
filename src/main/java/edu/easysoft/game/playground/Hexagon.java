@@ -6,6 +6,7 @@ import java.awt.*;
 /** Store coordinates of Hexagon**/
 
 public class Hexagon  {
+    boolean isMouseMoved;
     boolean isSelected;
     int x1;
     int y1;
@@ -138,6 +139,14 @@ public class Hexagon  {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public boolean isMouseMoved() {
+        return isMouseMoved;
+    }
+
+    public void setMouseMoved(boolean mouseMoved) {
+        isMouseMoved = mouseMoved;
     }
 
     @Override
