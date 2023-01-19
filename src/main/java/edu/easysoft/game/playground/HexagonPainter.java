@@ -117,19 +117,19 @@ public class HexagonPainter extends JPanel {
         for (Point iterPoint:hexagonMap.keySet()) {
 
             //middle area
-            if(point.getX()>iterPoint.getX()&&
-                    point.getX()<iterPoint.getX() + hexagonSize &&
-                    point.getY()>iterPoint.getY()
-                    && point.getY()<iterPoint.getY()+ 2 * sin60*hexagonSize){
+            if(point.getX()>=iterPoint.getX()&&
+                    point.getX()<=iterPoint.getX() + hexagonSize &&
+                    point.getY()>=iterPoint.getY()
+                    && point.getY()<=iterPoint.getY()+ 2 * sin60*hexagonSize){
                 hexagonMap.get(iterPoint).setSelected(true);
 
                 return iterPoint;
             }
             //left area
-            if(point.getX() > iterPoint.getX() -cos60*hexagonSize &&
-                    point.getX() < iterPoint.getX() &&
-                    point.getY() > iterPoint.getY() &&
-                    point.getY() < iterPoint.getY() + 2*sin60*hexagonSize ) {
+            if(point.getX() >= iterPoint.getX() -cos60*hexagonSize &&
+                    point.getX() <= iterPoint.getX() &&
+                    point.getY() >= iterPoint.getY() &&
+                    point.getY() <= iterPoint.getY() + 2*sin60*hexagonSize ) {
                 hexagonMap.get(iterPoint).setSelected(true);
 
                 return iterPoint;
