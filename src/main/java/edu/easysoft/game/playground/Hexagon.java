@@ -6,6 +6,7 @@ import java.awt.*;
 /** Store coordinates of Hexagon**/
 
 public class Hexagon  {
+    boolean isSelected;
     int x1;
     int y1;
     int x2;
@@ -129,5 +130,33 @@ public class Hexagon  {
 
     public void setY6(int y6) {
         this.y6 = y6;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    @Override
+    public String toString() {
+
+        return "Hexagon{" +
+                "isSelected=" + isSelected +
+                ", x1=" + x1 +
+                ", y1=" + y1 +
+                ", x2=" + x2 +
+                ", y2=" + y2 +
+                ", x3=" + x3 +
+                ", y3=" + y3 +
+                ", x4=" + x4 +
+                ", y4=" + y4 +
+                ", x5=" + x5 +
+                ", y5=" + y5 +
+                ", x6=" + x6 +
+                ", y6=" + y6 +
+                '}';
     }
 }

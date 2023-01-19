@@ -5,11 +5,14 @@ import edu.easysoft.game.playground.HexagonPainter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 
-public class ClickEventListener implements MouseListener {
+public class ClickEventListener implements MouseListener, MouseMotionListener {
 
     void saySomething(String eventDescription, MouseEvent e) {
-        System.out.println( e.getPoint()+" "+e.getComponent() );
+        System.out.println(eventDescription +"::  "+ e.getPoint()+" "
+                +e.getComponent().toString() );
         //System.out.println(e.getComponent().getGraphics());
     }
 
@@ -17,20 +20,17 @@ public class ClickEventListener implements MouseListener {
     public void mouseClicked(MouseEvent e) {
 
         saySomething("clicking",e);
-
-        e.getComponent().getGraphics().setColor(Color.blue);
-        //e.getComponent().getGraphics().fillOval(e.getX()-5,e.getY()-5,100,50);
+        Graphics2D graphic2d =(Graphics2D)e.getComponent().getGraphics();
+        graphic2d.setColor(Color.orange);
         HexagonPainter hexagonPainter =(HexagonPainter) e.getComponent();
 
-        e.getComponent().getGraphics().fillOval((int) (hexagonPainter.findClickedCell(e.getPoint()).getX()-hexagonPainter.getHexagonSize()*HexagonPainter.cos60)+5,
+        //todo: do not return null!
+        if(hexagonPainter.findClickedCell(e.getPoint())!=null)
+            graphic2d.fillOval((int) (hexagonPainter.findClickedCell(e.getPoint()).getX()-hexagonPainter.getHexagonSize()*HexagonPainter.cos60)+5,
                 (int)hexagonPainter.findClickedCell(e.getPoint()).getY()+5,
                 (int) (hexagonPainter.getHexagonSize()*(2*HexagonPainter.cos60+1))-10,
                 (int) ( 2 * hexagonPainter.getHexagonSize()*HexagonPainter.sin60)-10);
 
-
-        System.out.println(e.getComponent().getGraphics().getColor());
-        e.getComponent().getGraphics().setColor(Color.RED);
-        System.out.println(e.getComponent().getGraphics().getColor());
 
 
     }
@@ -54,5 +54,16 @@ public class ClickEventListener implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         e.getComponent().setBackground(Color.LIGHT_GRAY);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        saySomething("dragged move",e);
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        saySomething("moving",e);
+
     }
 }
