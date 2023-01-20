@@ -11,6 +11,7 @@ import java.util.Map;
 public class PlayGroundPainter extends JPanel {
     int hexagonSize = 30;
     boolean tableVisibility;
+    int count = 0;
     private Tablet tablet = new Tablet();
     Map<Point,Hexagon> hexagonMap = new HashMap<Point,Hexagon>();
     public static double sin60 = Math.sin(Math.toRadians(60));
@@ -56,6 +57,13 @@ public class PlayGroundPainter extends JPanel {
                         (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
             }
 
+        }
+        //todo: why does it work?
+        if(count <1){
+            tablet.setVisible(false);
+            tablet.setBackground(Color.getHSBColor(140,70,20));
+            this.add(tablet);
+            count++;
         }
 
     }
@@ -218,9 +226,9 @@ public class PlayGroundPainter extends JPanel {
         //this.remove(tablet);
         tablet.setVisible(revertVisibility(tableVisibility));
 
-        tablet.setSize(new Dimension(600,400));
+        //tablet.setSize(new Dimension(600,400));
         tablet.setBackground(Color.getHSBColor(140,70,20));
-        //tablet.setLocation(100,100);
+        tablet.setLocation(100,100);
 /*        if(tablet.getComponentCount()!=tablet.getCardList().size()){
             for (Card card : tablet.getCardList()) {
                 tablet.add(card);
