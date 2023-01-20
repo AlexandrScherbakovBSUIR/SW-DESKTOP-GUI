@@ -215,33 +215,32 @@ public class PlayGroundPainter extends JPanel {
     public void showTablet() {
 
         //todo: store tablet as field, create their oun class to process tablet
-        this.remove(tablet);
-
-
-
+        //this.remove(tablet);
+        tablet.setVisible(revertVisibility(tableVisibility));
 
         tablet.setSize(new Dimension(600,400));
-        tablet.setVisible(revertVisibility(tableVisibility));
-        tablet.setBackground(Color.getHSBColor(100,100,100));
-        tablet.setLocation(100,100);
+        tablet.setBackground(Color.getHSBColor(140,70,20));
+        //tablet.setLocation(100,100);
+/*        if(tablet.getComponentCount()!=tablet.getCardList().size()){
+            for (Card card : tablet.getCardList()) {
+                tablet.add(card);
 
-        for (Card card : tablet.getCardList()) {
-            //card.add(new JLabel(new ImageIcon("./src/main/resources/image/card/card_0.png","description of card 0")));
+                System.out.println("tablet: "+tablet.getComponentCount());
+            }
+        }*/
 
-            tablet.add(card);
+/*        for (Component card:tablet.getComponents()) {
+            card.setVisible(tableVisibility);
 
-        }
-
+        }*/
         this.add(tablet);
 
+        System.out.println(this.getComponentCount());
 
         super.repaint();
-
     }
     public boolean revertVisibility(boolean visible){
         this.tableVisibility = ! visible;
-        System.out.println(this.tableVisibility);
-
         return this.tableVisibility;
     }
 

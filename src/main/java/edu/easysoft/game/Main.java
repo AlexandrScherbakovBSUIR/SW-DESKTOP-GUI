@@ -3,6 +3,7 @@ package edu.easysoft.game;
 import edu.easysoft.game.listener.PlayGroundOperationListener;
 import edu.easysoft.game.listener.ClickEventListener;
 import edu.easysoft.game.playground.PlayGroundPainter;
+import edu.easysoft.game.tablet.Card;
 
 import java.awt.*;
 import javax.swing.*;
@@ -105,6 +106,9 @@ public class Main {
         jPanel2.add(generateButton);
         jPanel2.add(cleanButton);
         jPanel2.add(showTabletButton);
+        jPanel2.add(new Card());
+
+
         //jPanel2.add(new JLabel(new ImageIcon("./src/main/resources/image/card/card_0.png","description of card 0")));
         //jPanel2.add(btn4);
         jPanel.add(playGroundPainter);

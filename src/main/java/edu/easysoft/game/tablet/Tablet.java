@@ -9,9 +9,19 @@ import java.util.List;
 public class Tablet  extends JPanel {
     List<Card> cardList = new ArrayList<Card>();
     public Tablet(){
+        fillCardList(6);
+        System.out.println("constructor tablet: "+this.getComponentCount());
 
-        for (int i=0; i<6; i++){
-            this.cardList.add(new Card());
+
+    }
+
+    private void fillCardList(int count) {
+        Card card = null;
+
+        for (int i=0; i<count; i++){
+            card = new Card();
+            this.add(card);
+            this.cardList.add(card);
 
         }
     }
