@@ -9,7 +9,7 @@ public class Card extends JPanel{
     private int value = 0;
     private ImageIcon imageIcon = new ImageIcon("./src/main/resources/image/card/card_0.png","description of card 0");
     public Card(){
-        //
+        //todo: make factory for creating many card instance
         this.setBackground(Color.getHSBColor(40,170,200));
 
         this.add(new JLabel(getImageIcon()));

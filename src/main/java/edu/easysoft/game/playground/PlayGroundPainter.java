@@ -62,7 +62,12 @@ public class PlayGroundPainter extends JPanel {
         if(count <1){
             tablet.setVisible(false);
             tablet.setBackground(Color.getHSBColor(140,70,20));
+
+            tablet.setPreferredSize(new Dimension(300,200));
+
+            tablet.setLocation(100,100);
             this.add(tablet);
+            //this.setLayout(null);
             count++;
         }
 
