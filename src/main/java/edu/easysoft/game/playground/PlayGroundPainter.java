@@ -1,12 +1,13 @@
 package edu.easysoft.game.playground;
 
+import edu.easysoft.game.comparator.PointComparator;
 import edu.easysoft.game.tablet.Card;
 import edu.easysoft.game.tablet.Tablet;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PlayGroundPainter extends JPanel {
     int hexagonSize = 30;
@@ -100,7 +101,10 @@ public class PlayGroundPainter extends JPanel {
             hexagonMap.put(new Point(x1, y1),
                     new Hexagon(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6));
         }
-
+        hexagonMap = hexagonMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey(new PointComparator()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
     public void paintDoubleLine(Graphics g,double x1,double y1,double x2,double y2){
 
@@ -249,6 +253,10 @@ public class PlayGroundPainter extends JPanel {
         System.out.println(this.getComponentCount());
 
         super.repaint();
+        for (Point point: hexagonMap.keySet()) {
+            System.out.println(hexagonMap.get(point));
+
+        }
     }
     public boolean revertVisibility(boolean visible){
         this.tableVisibility = ! visible;
