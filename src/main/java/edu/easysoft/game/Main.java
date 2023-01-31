@@ -1,7 +1,7 @@
 package edu.easysoft.game;
 
 import edu.easysoft.game.listener.PlayGroundOperationListener;
-import edu.easysoft.game.listener.ClickEventListener;
+import edu.easysoft.game.listener.MousePlayGroundEventListener;
 import edu.easysoft.game.playground.PlayGroundPainter;
 
 import java.awt.*;
@@ -31,7 +31,7 @@ public class Main {
     }
 
     private static void addComponentsToPane(Container contentPane) {
-        ClickEventListener clickEventListener = new ClickEventListener();
+        MousePlayGroundEventListener clickEventListener = new MousePlayGroundEventListener();
 
         GridBagLayout gridBagLayout = new GridBagLayout();
         GridBagLayout menuButtonGridBagLayout = new GridBagLayout();
