@@ -29,5 +29,6 @@ public class PlayGroundOperationListener implements ActionListener {
 
                 playGroundPainter.showTablet();
         }
+
     }
 }

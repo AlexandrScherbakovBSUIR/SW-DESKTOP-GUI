@@ -11,7 +11,6 @@ public class ClickEventListener implements MouseListener, MouseMotionListener {
 
     void mouseEventCheck(String eventDescription, MouseEvent e) {
         System.out.println(eventDescription +"::  "+ e.getPoint());
-        //System.out.println(e.getComponent().getGraphics());
     }
 
     @Override
@@ -29,9 +28,6 @@ public class ClickEventListener implements MouseListener, MouseMotionListener {
                 (int) playGroundPainter.findClickedCell(e.getPoint()).getY()+5,
                 (int) (playGroundPainter.getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
                 (int) ( 2 * playGroundPainter.getHexagonSize()* PlayGroundPainter.sin60)-10);
-
-
-
     }
 
     @Override
@@ -81,19 +77,17 @@ public class ClickEventListener implements MouseListener, MouseMotionListener {
 
         mouseEventCheck("moving",e);
 
-/*        Graphics2D graphic2d =(Graphics2D)e.getComponent().getGraphics();
-        graphic2d.setColor(Color.red);
-        HexagonPainter hexagonPainter =(HexagonPainter) e.getComponent();
+        Graphics2D graphic2d =(Graphics2D)e.getComponent().getGraphics();
+        graphic2d.setColor(Color.orange);
+        PlayGroundPainter hexagonPainter =(PlayGroundPainter) e.getComponent();
 
         //todo: do not return null!
         if(!hexagonPainter.isTableVisibility())
             if(hexagonPainter.findMovedCell(e.getPoint())!=null)
                 graphic2d.drawOval((int) (hexagonPainter.findMovedCell(e.getPoint()).getX()
-                                -hexagonPainter.getHexagonSize()*HexagonPainter.cos60)+5,
+                                -hexagonPainter.getHexagonSize()*PlayGroundPainter.cos60)+5,
                     (int)hexagonPainter.findMovedCell(e.getPoint()).getY()+5,
-                    (int) (hexagonPainter.getHexagonSize()*(2*HexagonPainter.cos60+1))-10,
-                    (int) ( 2 * hexagonPainter.getHexagonSize()*HexagonPainter.sin60)-10);*/
-
-
+                    (int) (hexagonPainter.getHexagonSize()*(2*PlayGroundPainter.cos60+1))-10,
+                    (int) ( 2 * hexagonPainter.getHexagonSize()*PlayGroundPainter.sin60)-10);
     }
 }

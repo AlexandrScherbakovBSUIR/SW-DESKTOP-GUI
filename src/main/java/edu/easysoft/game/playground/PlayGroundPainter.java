@@ -21,10 +21,7 @@ public class PlayGroundPainter extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
-
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -103,6 +100,7 @@ public class PlayGroundPainter extends JPanel {
             hexagonMap.put(new Point(x1, y1),
                     new Hexagon(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6));
         }
+
     }
     public void paintDoubleLine(Graphics g,double x1,double y1,double x2,double y2){
 

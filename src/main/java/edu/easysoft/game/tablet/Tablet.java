@@ -11,9 +11,6 @@ public class Tablet  extends JPanel {
     public Tablet(){
         fillCardList(6);
         System.out.println("constructor tablet: "+this.getComponentCount());
-
-
-
     }
 
     private void fillCardList(int count) {
@@ -23,7 +20,6 @@ public class Tablet  extends JPanel {
             card = new Card();
             this.add(card);
             this.cardList.add(card);
-
         }
     }
 

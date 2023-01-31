@@ -3,7 +3,6 @@ package edu.easysoft.game;
 import edu.easysoft.game.listener.PlayGroundOperationListener;
 import edu.easysoft.game.listener.ClickEventListener;
 import edu.easysoft.game.playground.PlayGroundPainter;
-import edu.easysoft.game.tablet.Card;
 
 import java.awt.*;
 import javax.swing.*;
@@ -45,111 +44,118 @@ public class Main {
         constraintsPlayGround.gridwidth = 3;
         constraintsPlayGround.gridheight = 3;
 
-
         GridBagConstraints constraintsButtonPanel = new GridBagConstraints();
         constraintsButtonPanel.fill = GridBagConstraints.BOTH;
-        constraintsPlayGround.weighty = 1.0;   //request any extra vertical space
-        constraintsPlayGround.insets = new Insets(5,5,5,5);  //top padding
-        constraintsButtonPanel.gridx = 3;       //aligned with button 2
+        constraintsPlayGround.weighty = 1.0;
+        constraintsPlayGround.insets = new Insets(5,5,5,5);
+        constraintsButtonPanel.gridx = 3;
         constraintsButtonPanel.gridy = 0;
         constraintsButtonPanel.gridwidth = 1;
         constraintsButtonPanel.gridheight = 3;
 
-
-
+        GridBagConstraints showButtonConstraints = new GridBagConstraints();
+        showButtonConstraints.fill = GridBagConstraints.BOTH;
+        showButtonConstraints.weighty = 1.0;
+        showButtonConstraints.insets = new Insets(5,5,5,5);
+        showButtonConstraints.gridx = 0;
+        showButtonConstraints.gridy = 0;
+        showButtonConstraints.gridwidth = 2;
+        showButtonConstraints.gridheight = 1;
 
         GridBagConstraints generateButtonConstraints = new GridBagConstraints();
         generateButtonConstraints.fill = GridBagConstraints.BOTH;
-        generateButtonConstraints.weighty = 1.0;   //request any extra vertical space
-        generateButtonConstraints.insets = new Insets(5,5,5,5);  //top padding
-        generateButtonConstraints.gridx = 0;       //aligned with button 2
-        generateButtonConstraints.gridy = 0;
+        generateButtonConstraints.weighty = 1.0;
+        generateButtonConstraints.insets = new Insets(5,5,5,5);
+        generateButtonConstraints.gridx = 1;
+        generateButtonConstraints.gridy = 1;
         generateButtonConstraints.gridwidth = 1;
         generateButtonConstraints.gridheight = 1;
 
         GridBagConstraints cleanButtonConstraints = new GridBagConstraints();
         cleanButtonConstraints.fill = GridBagConstraints.BOTH;
-        cleanButtonConstraints.weighty = 1.0;   //request any extra vertical space
-        cleanButtonConstraints.insets = new Insets(5,5,5,5);  //top padding
-        cleanButtonConstraints.gridx = 0;       //aligned with button 2
+        cleanButtonConstraints.weighty = 1.0;
+        cleanButtonConstraints.insets = new Insets(5,5,5,5);
+        cleanButtonConstraints.gridx = 0;
         cleanButtonConstraints.gridy = 1;
         cleanButtonConstraints.gridwidth = 1;
         cleanButtonConstraints.gridheight = 1;
 
-        GridBagConstraints showButtonConstraints = new GridBagConstraints();
-        showButtonConstraints.fill = GridBagConstraints.BOTH;
-        showButtonConstraints.weighty = 1.0;   //request any extra vertical space
-        showButtonConstraints.insets = new Insets(5,5,5,5);  //top padding
-        showButtonConstraints.gridx = 1;       //aligned with button 2
-        showButtonConstraints.gridy = 0;
-        showButtonConstraints.gridwidth = 1;
-        showButtonConstraints.gridheight = 2;
-
-
-
         GridBagConstraints spyButtonConstraints = new GridBagConstraints();
         spyButtonConstraints.fill = GridBagConstraints.BOTH;
-        spyButtonConstraints.weighty = 1.0;   //request any extra vertical space
-        spyButtonConstraints.insets = new Insets(5,5,5,5);  //top padding
-        spyButtonConstraints.gridx = 0;       //aligned with button 2
+        spyButtonConstraints.weighty = 1.0;
+        spyButtonConstraints.insets = new Insets(5,5,5,5);
+        spyButtonConstraints.gridx = 0;
         spyButtonConstraints.gridy = 2;
         spyButtonConstraints.gridwidth = 1;
         spyButtonConstraints.gridheight = 1;
 
         GridBagConstraints diplomacyButtonConstraints = new GridBagConstraints();
         diplomacyButtonConstraints.fill = GridBagConstraints.BOTH;
-        diplomacyButtonConstraints.weighty = 1.0;   //request any extra vertical space
-        diplomacyButtonConstraints.insets = new Insets(5,5,5,5);  //top padding
-        diplomacyButtonConstraints.gridx = 1;       //aligned with button 2
+        diplomacyButtonConstraints.weighty = 1.0;
+        diplomacyButtonConstraints.insets = new Insets(5,5,5,5);
+        diplomacyButtonConstraints.gridx = 1;
         diplomacyButtonConstraints.gridy = 2;
         diplomacyButtonConstraints.gridwidth = 1;
         diplomacyButtonConstraints.gridheight = 1;
 
         GridBagConstraints throwDiceButtonConstraints = new GridBagConstraints();
         throwDiceButtonConstraints.fill = GridBagConstraints.BOTH;
-        throwDiceButtonConstraints.weighty = 1.0;   //request any extra vertical space
-        throwDiceButtonConstraints.insets = new Insets(5,5,5,5);  //top padding
-        throwDiceButtonConstraints.gridx = 0;       //aligned with button 2
+        throwDiceButtonConstraints.weighty = 1.0;
+        throwDiceButtonConstraints.insets = new Insets(5,5,5,5);
+        throwDiceButtonConstraints.gridx = 0;
         throwDiceButtonConstraints.gridy = 3;
         throwDiceButtonConstraints.gridwidth = 1;
         throwDiceButtonConstraints.gridheight = 1;
 
         GridBagConstraints fightButtonConstraints = new GridBagConstraints();
         fightButtonConstraints.fill = GridBagConstraints.BOTH;
-        fightButtonConstraints.weighty = 1.0;   //request any extra vertical space
-        fightButtonConstraints.insets = new Insets(5,5,5,5);  //top padding
-        fightButtonConstraints.gridx = 1;       //aligned with button 2
+        fightButtonConstraints.weighty = 1.0;
+        fightButtonConstraints.insets = new Insets(5,5,5,5);
+        fightButtonConstraints.gridx = 1;
         fightButtonConstraints.gridy = 3;
         fightButtonConstraints.gridwidth = 1;
         fightButtonConstraints.gridheight = 1;
 
+        GridBagConstraints endTurnButtonConstraints = new GridBagConstraints();
+        endTurnButtonConstraints.fill = GridBagConstraints.BOTH;
+        endTurnButtonConstraints.weighty = 1.0;
+        endTurnButtonConstraints.insets = new Insets(5,5,5,5);
+        endTurnButtonConstraints.gridx = 0;
+        endTurnButtonConstraints.gridy = 4;
+        endTurnButtonConstraints.gridwidth = 2;
+        endTurnButtonConstraints.gridheight = 1;
+
         GridBagConstraints ammunitionConstraints = new GridBagConstraints();
         ammunitionConstraints.fill = GridBagConstraints.BOTH;
-        ammunitionConstraints.weighty = 1.0;   //request any extra vertical space
-        ammunitionConstraints.insets = new Insets(5,5,5,5);  //top padding
-        ammunitionConstraints.gridx = 0;       //aligned with button 2
-        ammunitionConstraints.gridy = 4;
+        ammunitionConstraints.weighty = 1.0;
+        ammunitionConstraints.weightx = 1.0;
+        ammunitionConstraints.insets = new Insets(5,5,5,5);
+        ammunitionConstraints.gridx = 0;
+        ammunitionConstraints.gridy = 5;
         ammunitionConstraints.gridwidth = 1;
         ammunitionConstraints.gridheight = 2;
 
         GridBagConstraints vehicleConstraints = new GridBagConstraints();
         vehicleConstraints.fill = GridBagConstraints.BOTH;
-        vehicleConstraints.weighty = 1.0;   //request any extra vertical space
-        vehicleConstraints.insets = new Insets(5,5,5,5);  //top padding
-        vehicleConstraints.gridx = 1;       //aligned with button 2
-        vehicleConstraints.gridy = 4;
+        vehicleConstraints.weighty = 1.0;
+        vehicleConstraints.weightx = 1.0;
+        vehicleConstraints.insets = new Insets(5,5,5,5);
+        vehicleConstraints.gridx = 1;
+        vehicleConstraints.gridy = 5;
         vehicleConstraints.gridwidth = 1;
         vehicleConstraints.gridheight = 2;
 
-        JButton generateButton = new JButton("Generate template");
-        generateButton.setPreferredSize(new Dimension(75,50));
-        JButton cleanButton = new JButton("Clean Up");
-        cleanButton.setPreferredSize(new Dimension(75,50));
         JButton showTabletButton = new JButton("show Tablet");
+        showTabletButton.setPreferredSize(new Dimension(50,25));
+        JButton generateButton = new JButton("Generate template");
+        generateButton.setPreferredSize(new Dimension(50,25));
+        JButton cleanButton = new JButton("Clean Up");
+        cleanButton.setPreferredSize(new Dimension(50,25));
         JButton spyButton = new JButton("spy");
         JButton diplomacyButton = new JButton("diplomacy");
         JButton throwDiceButton = new JButton("throw dice");
         JButton fightButton = new JButton("fight");
+        JButton endTurnButton = new JButton("end turn");
         JPanel ammunitionPanel = new JPanel();
         ammunitionPanel.setBackground(Color.orange);
         ammunitionPanel.setPreferredSize(new Dimension(50,75));
@@ -157,9 +163,9 @@ public class Main {
         vehiclePanel.setBackground(Color.orange);
         vehiclePanel.setPreferredSize(new Dimension(50,75));
 
-        JPanel buttonPlanel = new JPanel();
+        JPanel buttonPanel = new JPanel();
 
-        JPanel jPanel = new JPanel();
+        JPanel playGroundPanel = new JPanel();
 
         PlayGroundPainter playGroundPainter = new PlayGroundPainter();
         PlayGroundOperationListener cleanUpPlayGroundListener =
@@ -176,30 +182,30 @@ public class Main {
         playGroundPainter.addMouseListener(clickEventListener);
         playGroundPainter.addMouseMotionListener(clickEventListener);
         playGroundPainter.setPreferredSize(new Dimension(850,650));
-        buttonPlanel.setLayout(menuButtonGridBagLayout);
-        buttonPlanel.add(generateButton,generateButtonConstraints);
-        buttonPlanel.add(cleanButton,cleanButtonConstraints);
-        buttonPlanel.add(showTabletButton,showButtonConstraints);
+        buttonPanel.setLayout(menuButtonGridBagLayout);
+        buttonPanel.add(generateButton,generateButtonConstraints);
+        buttonPanel.add(cleanButton,cleanButtonConstraints);
+        buttonPanel.add(showTabletButton,showButtonConstraints);
 
-        buttonPlanel.add(spyButton,spyButtonConstraints);
-        buttonPlanel.add(diplomacyButton,diplomacyButtonConstraints);
+        buttonPanel.add(spyButton,spyButtonConstraints);
+        buttonPanel.add(diplomacyButton,diplomacyButtonConstraints);
 
-        buttonPlanel.add(throwDiceButton,throwDiceButtonConstraints);
-        buttonPlanel.add(fightButton,fightButtonConstraints);
+        buttonPanel.add(throwDiceButton,throwDiceButtonConstraints);
+        buttonPanel.add(fightButton,fightButtonConstraints);
+        buttonPanel.add(endTurnButton,endTurnButtonConstraints);
 
-        buttonPlanel.add(ammunitionPanel,ammunitionConstraints);
-        buttonPlanel.add(vehiclePanel,vehicleConstraints);
+        buttonPanel.add(ammunitionPanel,ammunitionConstraints);
+        buttonPanel.add(vehiclePanel,vehicleConstraints);
 
-
-        jPanel.add(playGroundPainter);
-        jPanel.setSize(playGroundPainter.getSize());
-        jPanel.setBackground(Color.black);
+        playGroundPanel.add(playGroundPainter);
+        playGroundPanel.setSize(playGroundPainter.getSize());
+        playGroundPanel.setBackground(Color.black);
 
         contentPane.setLayout(gridBagLayout);
-        contentPane.add(jPanel,constraintsPlayGround);
+        contentPane.add(playGroundPanel,constraintsPlayGround);
         contentPane.setBackground(Color.gray);
 
-        contentPane.add(buttonPlanel,constraintsButtonPanel);
+        contentPane.add(buttonPanel,constraintsButtonPanel);
 
     }
 }
