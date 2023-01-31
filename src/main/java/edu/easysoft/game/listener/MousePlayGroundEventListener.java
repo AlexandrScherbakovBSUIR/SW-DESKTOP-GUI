@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class ClickEventListener implements MouseListener, MouseMotionListener {
+public class MousePlayGroundEventListener implements MouseListener, MouseMotionListener {
 
     void mouseEventCheck(String eventDescription, MouseEvent e) {
         System.out.println(eventDescription +"::  "+ e.getPoint());
