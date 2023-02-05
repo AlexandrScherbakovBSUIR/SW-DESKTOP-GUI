@@ -1,4 +1,4 @@
-package edu.easysoft.game.listener;
+package edu.easysoft.game.listener.playgroundListener;
 
 import edu.easysoft.game.playground.PlayGroundPainter;
 
@@ -10,7 +10,7 @@ import java.awt.event.MouseMotionListener;
 public class MousePlayGroundEventListener implements MouseListener, MouseMotionListener {
 
     void mouseEventCheck(String eventDescription, MouseEvent e) {
-        System.out.println(eventDescription +"::  "+ e.getPoint());
+       // System.out.println(eventDescription +"::  "+ e.getPoint());
     }
 
     @Override
@@ -22,6 +22,7 @@ public class MousePlayGroundEventListener implements MouseListener, MouseMotionL
         PlayGroundPainter playGroundPainter =(PlayGroundPainter) e.getComponent();
 
         //todo: do not return null!
+        //if selected 1 the second can be selected only if cell.isOnThePath()
         if(!playGroundPainter.isTableVisibility())
             if(playGroundPainter.findClickedCell(e.getPoint())!=null)
                 graphic2d.fillOval((int) (playGroundPainter.findClickedCell(e.getPoint()).getX()- playGroundPainter.getHexagonSize()* PlayGroundPainter.cos60)+5,
