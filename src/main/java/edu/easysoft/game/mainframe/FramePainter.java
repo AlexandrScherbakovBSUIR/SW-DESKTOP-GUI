@@ -1,7 +1,8 @@
 package edu.easysoft.game.mainframe;
 
-import edu.easysoft.game.listener.MousePlayGroundEventListener;
-import edu.easysoft.game.listener.PlayGroundOperationListener;
+import edu.easysoft.game.listener.menuListener.ThrowDiceButtonListener;
+import edu.easysoft.game.listener.playgroundListener.MousePlayGroundEventListener;
+import edu.easysoft.game.listener.menuListener.PlayGroundOperationListener;
 import edu.easysoft.game.playground.PlayGroundPainter;
 
 import javax.swing.*;
@@ -170,10 +171,12 @@ public final class  FramePainter {
                 new PlayGroundOperationListener(playGroundPainter,"generate");
         PlayGroundOperationListener showActionListener =
                 new PlayGroundOperationListener(playGroundPainter,"show");
+        ThrowDiceButtonListener throwDiceButtonListener = new ThrowDiceButtonListener(playGroundPainter);
 
         cleanButton.addActionListener(cleanUpPlayGroundListener);
         generateButton.addActionListener(generateActionListener);
         showTabletButton.addActionListener(showActionListener);
+        throwDiceButton.addActionListener(throwDiceButtonListener);
 
         playGroundPainter.addMouseListener(clickEventListener);
         playGroundPainter.addMouseMotionListener(clickEventListener);

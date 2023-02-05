@@ -1,4 +1,4 @@
-package edu.easysoft.game.listener;
+package edu.easysoft.game.listener.menuListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

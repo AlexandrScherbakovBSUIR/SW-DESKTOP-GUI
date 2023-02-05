@@ -1,4 +1,4 @@
-package edu.easysoft.game.listener;
+package edu.easysoft.game.listener.menuListener;
 
 import edu.easysoft.game.playground.PlayGroundPainter;
 

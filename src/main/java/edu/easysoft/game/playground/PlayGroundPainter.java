@@ -7,6 +7,7 @@ import edu.easysoft.game.tablet.Tablet;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlayGroundPainter extends JPanel {
@@ -14,7 +15,7 @@ public class PlayGroundPainter extends JPanel {
     boolean tableVisibility;
     int count = 0;
     private Tablet tablet = new Tablet();
-    Map<Point,Hexagon> hexagonMap = new HashMap<Point,Hexagon>();
+    Map<Point,Cell> cellMap = new HashMap<>();
     public static double sin60 = Math.sin(Math.toRadians(60));
     public static double cos60 = Math.cos(Math.toRadians(60));
     //x odd->even//y even->odd
@@ -47,9 +48,16 @@ public class PlayGroundPainter extends JPanel {
             x = (int)( x + 2*(hexagonSize +Math.round(hexagonSize *cos60)));
         }
         graphic2d.setColor(Color.darkGray);
-        for (Point point: hexagonMap.keySet()) {
-            if(hexagonMap.get(point).isSelected()){
+
+        for (Point point: cellMap.keySet()) {
+            if(cellMap.get(point).isSelected()){
                 graphic2d.fillOval((int) (point.getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
+                        (int)point.getY()+5,
+                        (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
+                        (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
+            }
+            if(cellMap.get(point).isOnThePath()){
+                graphic2d.drawOval((int) (point.getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
                         (int)point.getY()+5,
                         (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
                         (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
@@ -97,14 +105,16 @@ public class PlayGroundPainter extends JPanel {
         paintDoubleLine(g,x5,y5,x6,y6);
         paintDoubleLine(g,x6,y6,x1,y1);
 
-        if(!hexagonMap.containsKey(new Point(x1,y1))) {
-            hexagonMap.put(new Point(x1, y1),
-                    new Hexagon(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6));
+
+        if(!cellMap.containsKey(new Point(x1,y1))) {
+            cellMap.put(new Point(x1, y1),new Cell(new Hexagon(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6))
+                    );
         }
-        hexagonMap = hexagonMap.entrySet().stream()
+        cellMap = cellMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey(new PointComparator()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
     }
     public void paintDoubleLine(Graphics g,double x1,double y1,double x2,double y2){
 
@@ -129,20 +139,15 @@ public class PlayGroundPainter extends JPanel {
     }
 
     public Point findClickedCell(Point point){
-        int difX=0;
-        int difY=0;
-        int x =  0;
-        int y =  0;
 
-
-        for (Point iterPoint:hexagonMap.keySet()) {
+        for (Point iterPoint:cellMap.keySet()) {
 
             //middle area
             if(point.getX()>=iterPoint.getX()&&
                     point.getX()<=iterPoint.getX() + hexagonSize &&
                     point.getY()>=iterPoint.getY()
                     && point.getY()<=iterPoint.getY()+ 2 * sin60*hexagonSize){
-                hexagonMap.get(iterPoint).setSelected(true);
+                cellMap.get(iterPoint).setSelected(true);
 
                 return iterPoint;
             }
@@ -151,33 +156,22 @@ public class PlayGroundPainter extends JPanel {
                     point.getX() <= iterPoint.getX() &&
                     point.getY() >= iterPoint.getY() &&
                     point.getY() <= iterPoint.getY() + 2*sin60*hexagonSize ) {
-                hexagonMap.get(iterPoint).setSelected(true);
-
+                cellMap.get(iterPoint).setSelected(true);
                 return iterPoint;
             }
-
-
         }
-
         return null;
-
-
     }
     public Point findMovedCell(Point point){
-        int difX=0;
-        int difY=0;
-        int x =  0;
-        int y =  0;
-
-
-        for (Point iterPoint:hexagonMap.keySet()) {
+        for (Point iterPoint:cellMap.keySet()) {
 
             //middle area
             if(point.getX()>=iterPoint.getX()&&
                     point.getX()<=iterPoint.getX() + hexagonSize &&
                     point.getY()>=iterPoint.getY()
                     && point.getY()<=iterPoint.getY()+ 2 * sin60*hexagonSize){
-                hexagonMap.get(iterPoint).setMouseMoved(true);
+                //hexagonMap.get(iterPoint).setMouseMoved(true);
+                cellMap.get(iterPoint).setMouseMoved(true);
 
                 return iterPoint;
             }
@@ -186,43 +180,33 @@ public class PlayGroundPainter extends JPanel {
                     point.getX() <= iterPoint.getX() &&
                     point.getY() >= iterPoint.getY() &&
                     point.getY() <= iterPoint.getY() + 2*sin60*hexagonSize ) {
-                hexagonMap.get(iterPoint).setMouseMoved(true);
+                //hexagonMap.get(iterPoint).setMouseMoved(true);
+                cellMap.get(iterPoint).setMouseMoved(true);
 
                 return iterPoint;
             }
-
-
         }
-
         return null;
-
-
     }
 
-    public int getHexagonSize() {
-        return hexagonSize;
-    }
 
-    public void setHexagonSize(int hexagonSize) {
-        this.hexagonSize = hexagonSize;
-    }
     public  void cleanUpPlayGround(){
-        for (Hexagon hexagon:hexagonMap.values()) {
-            hexagon.setSelected(false);
+        for (Cell cell:cellMap.values()) {
+
+            cell.setSelected(false);
+            cell.setOnThePath(false);
 
         }
         super.repaint();
     }
 
     public void generateTemplate() {
-        for (Hexagon hexagon:hexagonMap.values()) {
+        for (Cell cell:cellMap.values()) {
             if(Math.random()< 0.15){
-                hexagon.setSelected(true);
+                cell.setSelected(true);
             }else{
-                hexagon.setSelected(false);
+                cell.setSelected(false);
             }
-
-
         }
         super.repaint();
     }
@@ -230,33 +214,13 @@ public class PlayGroundPainter extends JPanel {
     public void showTablet() {
 
         //todo: store tablet as field, create their oun class to process tablet
-        //this.remove(tablet);
         tablet.setVisible(revertVisibility(tableVisibility));
-
-        //tablet.setSize(new Dimension(600,400));
         tablet.setBackground(Color.getHSBColor(140,70,20));
         tablet.setLocation(100,100);
-/*        if(tablet.getComponentCount()!=tablet.getCardList().size()){
-            for (Card card : tablet.getCardList()) {
-                tablet.add(card);
 
-                System.out.println("tablet: "+tablet.getComponentCount());
-            }
-        }*/
-
-/*        for (Component card:tablet.getComponents()) {
-            card.setVisible(tableVisibility);
-
-        }*/
         this.add(tablet);
 
-        System.out.println(this.getComponentCount());
-
         super.repaint();
-        for (Point point: hexagonMap.keySet()) {
-            System.out.println(hexagonMap.get(point));
-
-        }
     }
     public boolean revertVisibility(boolean visible){
         this.tableVisibility = ! visible;
@@ -269,5 +233,66 @@ public class PlayGroundPainter extends JPanel {
 
     public void setTableVisibility(boolean tableVisibility) {
         this.tableVisibility = tableVisibility;
+    }
+    public int getHexagonSize() {
+        return hexagonSize;
+    }
+
+    public void setHexagonSize(int hexagonSize) {
+        this.hexagonSize = hexagonSize;
+    }
+
+
+    public void showPath(int step) {
+        for (Point point: cellMap.keySet()) {
+            if(cellMap.get(point).isSelected()){
+                findNearCell(point,step);
+
+            }
+
+        }
+    }
+
+    private void findNearCell(Point point, int step) {
+        List<Point> pointList = new ArrayList<>();
+        if(step>0){
+            pointList.add(findMovedCell(new Point(
+                    (int) (point.getX()-((hexagonSize +Math.round(hexagonSize *cos60)))),
+                    (int) (point.getY()+Math.round(hexagonSize *sin60)))));
+            pointList.add(findMovedCell(new Point(
+                    (int) (point.getX()-((hexagonSize +Math.round(hexagonSize *cos60)))),
+                    (int) (point.getY()-Math.round(hexagonSize *sin60)))));
+            pointList.add(findMovedCell(new Point(
+                    (int) (point.getX()+((hexagonSize +Math.round(hexagonSize *cos60)))),
+                    (int) (point.getY()+Math.round(hexagonSize *sin60)))));
+            pointList.add(findMovedCell(new Point(
+                    (int) (point.getX()+((hexagonSize +Math.round(hexagonSize *cos60)))),
+                    (int) (point.getY()-Math.round(hexagonSize *sin60)))));
+
+            pointList.add(findMovedCell(new Point(
+                    (int) (point.getX()),
+                    (int) (point.getY()+2*Math.round(hexagonSize *sin60)))));
+            pointList.add(findMovedCell(new Point(
+                    (int) (point.getX()),
+                    (int) (point.getY()-2*Math.round(hexagonSize *sin60)))));
+
+            System.out.println("pointList size: "+pointList.size());
+
+            for (Point iterPoint: pointList) {
+                int iterStep = step-1;
+                if(!cellMap.get(iterPoint).isSelected()){
+                    cellMap.get(iterPoint).setOnThePath(true);
+
+                }
+
+                findNearCell(iterPoint,iterStep);
+            }
+        }
+
+    }
+
+    public void fight(){
+        // counter= counter + cell.value;
+        // cell.value = 0;
     }
 }

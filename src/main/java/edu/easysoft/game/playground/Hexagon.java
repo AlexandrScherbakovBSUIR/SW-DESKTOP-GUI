@@ -1,13 +1,14 @@
 package edu.easysoft.game.playground;
 
-import javax.swing.*;
-import java.awt.*;
+
 
 /** Store coordinates of Hexagon**/
 
 public class Hexagon  {
-    boolean isMouseMoved;
-    boolean isSelected;
+    //todo: refactor this class
+/*    boolean isMouseMoved;
+    boolean isSelected;*/
+
     int x1;
     int y1;
     int x2;
@@ -133,6 +134,7 @@ public class Hexagon  {
         this.y6 = y6;
     }
 
+/*
     public boolean isSelected() {
         return isSelected;
     }
@@ -148,12 +150,13 @@ public class Hexagon  {
     public void setMouseMoved(boolean mouseMoved) {
         isMouseMoved = mouseMoved;
     }
+*/
 
     @Override
     public String toString() {
 
         return "Hexagon{" +
-                "isSelected=" + isSelected +
+           //     "isSelected=" + isSelected +
                 ", x1=" + x1 +
                 ", y1=" + y1 +
                 ", x2=" + x2 +
