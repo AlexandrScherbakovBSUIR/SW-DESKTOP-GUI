@@ -11,6 +11,8 @@ public class Cell {
     private boolean isActionAttached;
     private boolean isBarrier;
 
+    private boolean startPoint;
+
     Cell(Hexagon hexagon){
         this.hexagon = hexagon;
 
@@ -66,4 +68,19 @@ public class Cell {
         isActionAttached = actionAttached;
     }
 
+    public boolean isBarrier() {
+        return isBarrier;
+    }
+
+    public void setBarrier(boolean barrier) {
+        isBarrier = barrier;
+    }
+
+    public boolean isStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(boolean startPoint) {
+        this.startPoint = startPoint;
+    }
 }

@@ -15,10 +15,10 @@ public class PlayGroundPainter extends JPanel {
     boolean tableVisibility;
     int count = 0;
     private Tablet tablet = new Tablet();
+    private PlayGroundWalker  playGroundWalker ;
     Map<Point,Cell> cellMap = new HashMap<>();
     public static double sin60 = Math.sin(Math.toRadians(60));
     public static double cos60 = Math.cos(Math.toRadians(60));
-    //x odd->even//y even->odd
 
     @Override
     public void paint(Graphics g) {
@@ -49,6 +49,11 @@ public class PlayGroundPainter extends JPanel {
         }
         graphic2d.setColor(Color.darkGray);
 
+        cellMap = cellMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey(new PointComparator()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
         for (Point point: cellMap.keySet()) {
             if(cellMap.get(point).isSelected()){
                 graphic2d.fillOval((int) (point.getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
@@ -62,8 +67,16 @@ public class PlayGroundPainter extends JPanel {
                         (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
                         (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
             }
-
         }
+
+        graphic2d.setColor(Color.blue);
+        graphic2d.fillOval((int) (playGroundWalker.getLocation().getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
+                (int)playGroundWalker.getLocation().getY()+5,
+                (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
+                (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
+        graphic2d.setColor(Color.darkGray);
+
+
         //todo: why does it work?
         if(count <1){
             tablet.setVisible(false);
@@ -107,17 +120,18 @@ public class PlayGroundPainter extends JPanel {
 
 
         if(!cellMap.containsKey(new Point(x1,y1))) {
-            cellMap.put(new Point(x1, y1),new Cell(new Hexagon(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6))
-                    );
+            cellMap.put(new Point(x1, y1),new Cell(new Hexagon(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6)));
+
+            if(playGroundWalker==null){
+                playGroundWalker = new PlayGroundWalker(new Point(x1,y1));
+            }
         }
-        cellMap = cellMap.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey(new PointComparator()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
 
     }
     public void paintDoubleLine(Graphics g,double x1,double y1,double x2,double y2){
-
+        //x odd->even
+        //y even->odd
         if (y1==y2){
             if( Math.round(y1) % 2 == 0){
                 g.drawLine((int) Math.round(x1),(int)Math.round(y1),
@@ -143,11 +157,13 @@ public class PlayGroundPainter extends JPanel {
         for (Point iterPoint:cellMap.keySet()) {
 
             //middle area
-            if(point.getX()>=iterPoint.getX()&&
-                    point.getX()<=iterPoint.getX() + hexagonSize &&
-                    point.getY()>=iterPoint.getY()
-                    && point.getY()<=iterPoint.getY()+ 2 * sin60*hexagonSize){
+            if(point.getX()>=iterPoint.getX()
+                    && point.getX()<=iterPoint.getX() + hexagonSize
+                    && point.getY()>=iterPoint.getY()
+                    && point.getY()<=iterPoint.getY()+ 2 * sin60*hexagonSize
+                    && cellMap.get(iterPoint).isOnThePath()){
                 cellMap.get(iterPoint).setSelected(true);
+                moveWalker(iterPoint);
 
                 return iterPoint;
             }
@@ -155,8 +171,12 @@ public class PlayGroundPainter extends JPanel {
             if(point.getX() >= iterPoint.getX() -cos60*hexagonSize &&
                     point.getX() <= iterPoint.getX() &&
                     point.getY() >= iterPoint.getY() &&
-                    point.getY() <= iterPoint.getY() + 2*sin60*hexagonSize ) {
+                    point.getY() <= iterPoint.getY() + 2*sin60*hexagonSize &&
+                    cellMap.get(iterPoint).isOnThePath()) {
                 cellMap.get(iterPoint).setSelected(true);
+                moveWalker(iterPoint);
+
+
                 return iterPoint;
             }
         }
@@ -172,6 +192,7 @@ public class PlayGroundPainter extends JPanel {
                     && point.getY()<=iterPoint.getY()+ 2 * sin60*hexagonSize){
                 //hexagonMap.get(iterPoint).setMouseMoved(true);
                 cellMap.get(iterPoint).setMouseMoved(true);
+                //moveWalker(iterPoint);
 
                 return iterPoint;
             }
@@ -211,6 +232,103 @@ public class PlayGroundPainter extends JPanel {
         super.repaint();
     }
 
+
+
+
+    public void showPath(int step) {
+        //todo: step from Walker
+        findNearCell(playGroundWalker.getLocation(),step);
+    }
+
+    private void findNearCell(Point point, int step) {
+        List<Point> pointList = new ArrayList<>();
+        if(step>0){
+            System.out.println("=================================================");
+            System.out.println(new Point(
+                    (int) (point.getX() - ((hexagonSize + Math.round(hexagonSize * cos60)))),
+                    (int) (point.getY() + Math.round(hexagonSize * sin60))));
+            System.out.println(new Point(
+                    (int) (point.getX() - ((hexagonSize + Math.round(hexagonSize * cos60)))),
+                    (int) (point.getY() - Math.round(hexagonSize * sin60))));
+            System.out.println(new Point(
+                    (int) (point.getX() + ((hexagonSize + Math.round(hexagonSize * cos60)))),
+                    (int) (point.getY() + Math.round(hexagonSize * sin60))));
+            System.out.println(new Point(
+                    (int) (point.getX() + ((hexagonSize + Math.round(hexagonSize * cos60)))),
+                    (int) (point.getY() - Math.round(hexagonSize * sin60))));
+            System.out.println(new Point(
+                    (int) (point.getX()),
+                    (int) (point.getY() + 2 * Math.round(hexagonSize * sin60))));
+            System.out.println(new Point(
+                    (int) (point.getX()),
+                    (int) (point.getY() - 2 * Math.round(hexagonSize * sin60))));
+
+            if(point.getX() - (hexagonSize + Math.round(hexagonSize * cos60))>=40
+                && point.getY() + Math.round(hexagonSize * sin60)<=586)
+                pointList.add(findMovedCell(new Point(
+                        (int) (point.getX() - ((hexagonSize + Math.round(hexagonSize * cos60)))),
+                        (int) (point.getY() + Math.round(hexagonSize * sin60)))));
+
+            if(point.getX() - (hexagonSize + Math.round(hexagonSize * cos60))>=40
+                && point.getY() - Math.round(hexagonSize * sin60)>=14)
+                pointList.add(findMovedCell(new Point(
+                        (int) (point.getX() - ((hexagonSize + Math.round(hexagonSize * cos60)))),
+                        (int) (point.getY() - Math.round(hexagonSize * sin60)))));
+
+            if(point.getX() + ((hexagonSize + Math.round(hexagonSize * cos60)))<=760
+                && point.getY() + Math.round(hexagonSize * sin60)<=586)
+                pointList.add(findMovedCell(new Point(
+                        (int) (point.getX() + ((hexagonSize + Math.round(hexagonSize * cos60)))),
+                        (int) (point.getY() + Math.round(hexagonSize * sin60)))));
+
+            if(point.getX() + ((hexagonSize + Math.round(hexagonSize * cos60)))<=760
+                && point.getY() - Math.round(hexagonSize * sin60)>=14)
+                pointList.add(findMovedCell(new Point(
+                        (int) (point.getX() + ((hexagonSize + Math.round(hexagonSize * cos60)))),
+                        (int) (point.getY() - Math.round(hexagonSize * sin60)))));
+
+            if(point.getY() + 2 * Math.round(hexagonSize * sin60)<=586)
+                pointList.add(findMovedCell(new Point(
+                        (int) (point.getX()),
+                        (int) (point.getY() + 2 * Math.round(hexagonSize * sin60)))));
+
+            if(point.getY() - 2 * Math.round(hexagonSize * sin60) >= 14)
+                pointList.add(findMovedCell(new Point(
+                        (int) (point.getX()),
+                        (int) (point.getY() - 2 * Math.round(hexagonSize * sin60)))));
+
+            System.out.println("pointList size: "+pointList.size());
+
+            for (Point iterPoint: pointList) {
+                System.out.println(iterPoint);
+                int iterStep = step-1;
+                if (!iterPoint.equals(playGroundWalker.getLocation())) { //todo:  barrier
+                    cellMap.get(iterPoint).setOnThePath(true);
+                }
+                findNearCell(iterPoint,iterStep);
+            }
+        }
+
+    }
+
+    public void moveWalker(Point point){
+        cellMap.get(playGroundWalker.getLocation()).setSelected(false);
+        playGroundWalker.setLocation(point);
+        for (Cell cell: cellMap.values()) {
+            cell.setOnThePath(false);
+
+        }
+        super.repaint();
+
+    }
+    public void fight(int power){
+        // counter= counter + cell.value;
+        // cell.value = 0;
+/*        if(power>=cell){
+
+        }*/
+    }
+
     public void showTablet() {
 
         //todo: store tablet as field, create their oun class to process tablet
@@ -240,59 +358,5 @@ public class PlayGroundPainter extends JPanel {
 
     public void setHexagonSize(int hexagonSize) {
         this.hexagonSize = hexagonSize;
-    }
-
-
-    public void showPath(int step) {
-        for (Point point: cellMap.keySet()) {
-            if(cellMap.get(point).isSelected()){
-                findNearCell(point,step);
-
-            }
-
-        }
-    }
-
-    private void findNearCell(Point point, int step) {
-        List<Point> pointList = new ArrayList<>();
-        if(step>0){
-            pointList.add(findMovedCell(new Point(
-                    (int) (point.getX()-((hexagonSize +Math.round(hexagonSize *cos60)))),
-                    (int) (point.getY()+Math.round(hexagonSize *sin60)))));
-            pointList.add(findMovedCell(new Point(
-                    (int) (point.getX()-((hexagonSize +Math.round(hexagonSize *cos60)))),
-                    (int) (point.getY()-Math.round(hexagonSize *sin60)))));
-            pointList.add(findMovedCell(new Point(
-                    (int) (point.getX()+((hexagonSize +Math.round(hexagonSize *cos60)))),
-                    (int) (point.getY()+Math.round(hexagonSize *sin60)))));
-            pointList.add(findMovedCell(new Point(
-                    (int) (point.getX()+((hexagonSize +Math.round(hexagonSize *cos60)))),
-                    (int) (point.getY()-Math.round(hexagonSize *sin60)))));
-
-            pointList.add(findMovedCell(new Point(
-                    (int) (point.getX()),
-                    (int) (point.getY()+2*Math.round(hexagonSize *sin60)))));
-            pointList.add(findMovedCell(new Point(
-                    (int) (point.getX()),
-                    (int) (point.getY()-2*Math.round(hexagonSize *sin60)))));
-
-            System.out.println("pointList size: "+pointList.size());
-
-            for (Point iterPoint: pointList) {
-                int iterStep = step-1;
-                if(!cellMap.get(iterPoint).isSelected()){
-                    cellMap.get(iterPoint).setOnThePath(true);
-
-                }
-
-                findNearCell(iterPoint,iterStep);
-            }
-        }
-
-    }
-
-    public void fight(){
-        // counter= counter + cell.value;
-        // cell.value = 0;
     }
 }
