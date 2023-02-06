@@ -39,7 +39,7 @@ public class SimpleClient {
     }
 
 
-    public String postRequest(String url) {
+    public String postRequest(String url,String jsonString) {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest postRequest = null;
@@ -47,7 +47,7 @@ public class SimpleClient {
         try {
             postRequest = HttpRequest.newBuilder()
                     .uri(new URI(url))
-                    .POST(HttpRequest.BodyPublishers.ofString("{\"action\":\"hello\"}"))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonString))
                     .build();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);

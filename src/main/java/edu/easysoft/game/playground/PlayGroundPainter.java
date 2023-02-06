@@ -120,7 +120,7 @@ public class PlayGroundPainter extends JPanel {
 
 
         if(!cellMap.containsKey(new Point(x1,y1))) {
-            cellMap.put(new Point(x1, y1),new Cell(new Hexagon(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6)));
+            cellMap.put(new Point(x1, y1),new Cell(new Hexagon(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6),1));
 
             if(playGroundWalker==null){
                 playGroundWalker = new PlayGroundWalker(new Point(x1,y1));
@@ -243,25 +243,7 @@ public class PlayGroundPainter extends JPanel {
     private void findNearCell(Point point, int step) {
         List<Point> pointList = new ArrayList<>();
         if(step>0){
-            System.out.println("=================================================");
-            System.out.println(new Point(
-                    (int) (point.getX() - ((hexagonSize + Math.round(hexagonSize * cos60)))),
-                    (int) (point.getY() + Math.round(hexagonSize * sin60))));
-            System.out.println(new Point(
-                    (int) (point.getX() - ((hexagonSize + Math.round(hexagonSize * cos60)))),
-                    (int) (point.getY() - Math.round(hexagonSize * sin60))));
-            System.out.println(new Point(
-                    (int) (point.getX() + ((hexagonSize + Math.round(hexagonSize * cos60)))),
-                    (int) (point.getY() + Math.round(hexagonSize * sin60))));
-            System.out.println(new Point(
-                    (int) (point.getX() + ((hexagonSize + Math.round(hexagonSize * cos60)))),
-                    (int) (point.getY() - Math.round(hexagonSize * sin60))));
-            System.out.println(new Point(
-                    (int) (point.getX()),
-                    (int) (point.getY() + 2 * Math.round(hexagonSize * sin60))));
-            System.out.println(new Point(
-                    (int) (point.getX()),
-                    (int) (point.getY() - 2 * Math.round(hexagonSize * sin60))));
+
 
             if(point.getX() - (hexagonSize + Math.round(hexagonSize * cos60))>=40
                 && point.getY() + Math.round(hexagonSize * sin60)<=586)
@@ -297,10 +279,9 @@ public class PlayGroundPainter extends JPanel {
                         (int) (point.getX()),
                         (int) (point.getY() - 2 * Math.round(hexagonSize * sin60)))));
 
-            System.out.println("pointList size: "+pointList.size());
+
 
             for (Point iterPoint: pointList) {
-                System.out.println(iterPoint);
                 int iterStep = step-1;
                 if (!iterPoint.equals(playGroundWalker.getLocation())) { //todo:  barrier
                     cellMap.get(iterPoint).setOnThePath(true);
@@ -314,6 +295,8 @@ public class PlayGroundPainter extends JPanel {
     public void moveWalker(Point point){
         cellMap.get(playGroundWalker.getLocation()).setSelected(false);
         playGroundWalker.setLocation(point);
+        fight(5);
+
         for (Cell cell: cellMap.values()) {
             cell.setOnThePath(false);
 
@@ -324,9 +307,8 @@ public class PlayGroundPainter extends JPanel {
     public void fight(int power){
         // counter= counter + cell.value;
         // cell.value = 0;
-/*        if(power>=cell){
-
-        }*/
+        playGroundWalker.increaseTrophy(cellMap.get(playGroundWalker.getLocation()).getValue());
+        cellMap.get(playGroundWalker.getLocation()).setValue(0);
     }
 
     public void showTablet() {
@@ -358,5 +340,11 @@ public class PlayGroundPainter extends JPanel {
 
     public void setHexagonSize(int hexagonSize) {
         this.hexagonSize = hexagonSize;
+    }
+
+    public String toJSON() {
+        System.out.println("{\"count\":\"" + playGroundWalker.getTrophy() + "!\"}");
+        return "{\"count\":\"" + playGroundWalker.getTrophy() + "!\"}";
+
     }
 }

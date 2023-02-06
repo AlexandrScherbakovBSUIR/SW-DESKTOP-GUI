@@ -5,6 +5,7 @@ import edu.easysoft.game.mechanics.CellAction;
 public class Cell {
     private CellAction cellAction;
     private Hexagon hexagon;
+    private int value;
     private boolean isMouseMoved;
     private boolean isSelected;
     private boolean isOnThePath;
@@ -13,8 +14,9 @@ public class Cell {
 
     private boolean startPoint;
 
-    Cell(Hexagon hexagon){
+    Cell(Hexagon hexagon,int value){
         this.hexagon = hexagon;
+        this.value = value;
 
     }
 
@@ -82,5 +84,13 @@ public class Cell {
 
     public void setStartPoint(boolean startPoint) {
         this.startPoint = startPoint;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }

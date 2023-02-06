@@ -23,14 +23,14 @@ public class MousePlayGroundEventListener implements MouseListener, MouseMotionL
 
         //todo: do not return null!
 
-        if(!playGroundPainter.isTableVisibility())
-
-            if(playGroundPainter.findClickedCell(e.getPoint())!=null)
-
-                graphic2d.fillOval((int) (playGroundPainter.findClickedCell(e.getPoint()).getX()- playGroundPainter.getHexagonSize()* PlayGroundPainter.cos60)+5,
-                (int) playGroundPainter.findClickedCell(e.getPoint()).getY()+5,
-                (int) (playGroundPainter.getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
-                (int) ( 2 * playGroundPainter.getHexagonSize()* PlayGroundPainter.sin60)-10);
+        if(!playGroundPainter.isTableVisibility()) {
+            Point clickedPoint = playGroundPainter.findClickedCell(e.getPoint());
+            if (clickedPoint != null)
+                graphic2d.fillOval((int) (clickedPoint.getX() - playGroundPainter.getHexagonSize() * PlayGroundPainter.cos60) + 5,
+                        (int) clickedPoint.getY() + 5,
+                        (int) (playGroundPainter.getHexagonSize() * (2 * PlayGroundPainter.cos60 + 1)) - 10,
+                        (int) (2 * playGroundPainter.getHexagonSize() * PlayGroundPainter.sin60) - 10);
+        }
     }
 
     @Override

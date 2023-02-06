@@ -1,5 +1,6 @@
 package edu.easysoft.game.mainframe;
 
+import edu.easysoft.game.client.SimpleClient;
 import edu.easysoft.game.listener.menuListener.ThrowDiceButtonListener;
 import edu.easysoft.game.listener.playgroundListener.MousePlayGroundEventListener;
 import edu.easysoft.game.listener.menuListener.PlayGroundOperationListener;
@@ -9,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public final class  FramePainter {
+    private static SimpleClient simpleClient = new SimpleClient();
     private FramePainter(){};
 
     public static void createAndShowGUI() {
@@ -171,7 +173,7 @@ public final class  FramePainter {
                 new PlayGroundOperationListener(playGroundPainter,"generate");
         PlayGroundOperationListener showActionListener =
                 new PlayGroundOperationListener(playGroundPainter,"show");
-        ThrowDiceButtonListener throwDiceButtonListener = new ThrowDiceButtonListener(playGroundPainter);
+        ThrowDiceButtonListener throwDiceButtonListener = new ThrowDiceButtonListener(playGroundPainter, getClient());
 
         cleanButton.addActionListener(cleanUpPlayGroundListener);
         generateButton.addActionListener(generateActionListener);
@@ -206,5 +208,10 @@ public final class  FramePainter {
 
         contentPane.add(buttonPanel,constraintsButtonPanel);
 
+    }
+
+    private static SimpleClient getClient() {
+
+        return simpleClient;
     }
 }
