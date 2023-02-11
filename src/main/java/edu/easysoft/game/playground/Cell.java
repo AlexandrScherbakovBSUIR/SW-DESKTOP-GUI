@@ -5,14 +5,18 @@ import edu.easysoft.game.mechanics.CellAction;
 public class Cell {
     private CellAction cellAction;
     private Hexagon hexagon;
+    private int value;
     private boolean isMouseMoved;
     private boolean isSelected;
     private boolean isOnThePath;
     private boolean isActionAttached;
     private boolean isBarrier;
 
-    Cell(Hexagon hexagon){
+    private boolean startPoint;
+
+    Cell(Hexagon hexagon,int value){
         this.hexagon = hexagon;
+        this.value = value;
 
     }
 
@@ -66,4 +70,27 @@ public class Cell {
         isActionAttached = actionAttached;
     }
 
+    public boolean isBarrier() {
+        return isBarrier;
+    }
+
+    public void setBarrier(boolean barrier) {
+        isBarrier = barrier;
+    }
+
+    public boolean isStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(boolean startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 }
