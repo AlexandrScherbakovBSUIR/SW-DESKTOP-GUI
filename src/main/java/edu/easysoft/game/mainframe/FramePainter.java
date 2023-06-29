@@ -1,6 +1,6 @@
 package edu.easysoft.game.mainframe;
 
-import edu.easysoft.game.client.SimpleClient;
+import edu.easysoft.game.client.RestClient;
 import edu.easysoft.game.listener.menuListener.ThrowDiceButtonListener;
 import edu.easysoft.game.listener.playgroundListener.MousePlayGroundEventListener;
 import edu.easysoft.game.listener.menuListener.PlayGroundOperationListener;
@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public final class  FramePainter {
-    private static SimpleClient simpleClient = new SimpleClient();
+    private static RestClient restClient = new RestClient();
     private FramePainter(){};
 
     public static void createAndShowGUI() {
@@ -210,8 +210,8 @@ public final class  FramePainter {
 
     }
 
-    private static SimpleClient getClient() {
+    private static RestClient getClient() {
 
-        return simpleClient;
+        return restClient;
     }
 }

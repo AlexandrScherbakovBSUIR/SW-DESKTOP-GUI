@@ -15,21 +15,14 @@ public class MousePlayGroundEventListener implements MouseListener, MouseMotionL
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
         mouseEventCheck("clicking",e);
+
         Graphics2D graphic2d =(Graphics2D)e.getComponent().getGraphics();
         graphic2d.setColor(Color.darkGray);
         PlayGroundPainter playGroundPainter =(PlayGroundPainter) e.getComponent();
 
-        //todo: do not return null!
-
         if(!playGroundPainter.isTableVisibility()) {
             Point clickedPoint = playGroundPainter.findClickedCell(e.getPoint());
-            if (clickedPoint != null)
-                graphic2d.fillOval((int) (clickedPoint.getX() - playGroundPainter.getHexagonSize() * PlayGroundPainter.cos60) + 5,
-                        (int) clickedPoint.getY() + 5,
-                        (int) (playGroundPainter.getHexagonSize() * (2 * PlayGroundPainter.cos60 + 1)) - 10,
-                        (int) (2 * playGroundPainter.getHexagonSize() * PlayGroundPainter.sin60) - 10);
         }
     }
 
@@ -53,14 +46,16 @@ public class MousePlayGroundEventListener implements MouseListener, MouseMotionL
     @Override
     public void mouseExited(MouseEvent e) {
         mouseEventCheck("make lighter",e);
+        PlayGroundPainter playGroundPainter =(PlayGroundPainter) e.getComponent();
+        playGroundPainter.cleanUpMovedCell();
 
-        e.getComponent().setBackground(Color.GRAY);
+        //e.getComponent().setBackground(Color.lightGray);
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         mouseEventCheck("dragged move",e);
-
+/*
         Graphics2D graphic2d =(Graphics2D)e.getComponent().getGraphics();
         graphic2d.setColor(Color.red);
         PlayGroundPainter playGroundPainter =(PlayGroundPainter) e.getComponent();
@@ -72,7 +67,7 @@ public class MousePlayGroundEventListener implements MouseListener, MouseMotionL
                                 - playGroundPainter.getHexagonSize()* PlayGroundPainter.cos60)+5,
                         (int) playGroundPainter.findMovedCell(e.getPoint()).getY()+5,
                         (int) (playGroundPainter.getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
-                        (int) ( 2 * playGroundPainter.getHexagonSize()* PlayGroundPainter.sin60)-10);
+                        (int) ( 2 * playGroundPainter.getHexagonSize()* PlayGroundPainter.sin60)-10);*/
     }
 
     @Override
@@ -81,7 +76,7 @@ public class MousePlayGroundEventListener implements MouseListener, MouseMotionL
         mouseEventCheck("moving",e);
 
         Graphics2D graphic2d =(Graphics2D)e.getComponent().getGraphics();
-        graphic2d.setColor(Color.orange);
+        graphic2d.setColor(Color.GRAY);
         PlayGroundPainter hexagonPainter =(PlayGroundPainter) e.getComponent();
 
         //todo: do not return null!

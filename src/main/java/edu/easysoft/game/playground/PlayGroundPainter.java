@@ -1,7 +1,6 @@
 package edu.easysoft.game.playground;
 
 import edu.easysoft.game.comparator.PointComparator;
-import edu.easysoft.game.tablet.Card;
 import edu.easysoft.game.tablet.Tablet;
 
 import javax.swing.*;
@@ -32,6 +31,7 @@ public class PlayGroundPainter extends JPanel {
         graphic2d.setColor(Color.black);
 
 
+        //drawing playground for X
         for(int x=40; x<=800; ){
             for(int y=40; y<=600;){
                 paintHexagon(graphic2d, hexagonSize,x,y);
@@ -39,6 +39,7 @@ public class PlayGroundPainter extends JPanel {
             }
             x = (int)( x + 2*(hexagonSize +Math.round(hexagonSize *cos60)));
         }
+        //drawing playground for Y
         for(int x = (int)(40+Math.round(hexagonSize *cos60)+ hexagonSize); x<=800; ){
             for(int y = (int) (40-Math.round(hexagonSize *sin60)); y<=600;
             ){
@@ -49,26 +50,36 @@ public class PlayGroundPainter extends JPanel {
         }
         graphic2d.setColor(Color.darkGray);
 
+        //sort it by Y then by X
         cellMap = cellMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey(new PointComparator()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
         for (Point point: cellMap.keySet()) {
-            if(cellMap.get(point).isSelected()){
+
+            if(cellMap.get(point).isBarrierGenerated()){
                 graphic2d.fillOval((int) (point.getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
                         (int)point.getY()+5,
                         (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
                         (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
             }
+            //draw the path after throw dices
             if(cellMap.get(point).isOnThePath()){
                 graphic2d.drawOval((int) (point.getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
                         (int)point.getY()+5,
                         (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
                         (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
             }
+            if(cellMap.get(point).isMouseMoved()){
+                graphic2d.drawOval((int) (point.getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
+                        (int)point.getY()+5,
+                        (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
+                        (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
+                cellMap.get(point).setMouseMoved(false);
+            }
         }
-
+        //drawing player onto playground
         graphic2d.setColor(Color.blue);
         graphic2d.fillOval((int) (playGroundWalker.getLocation().getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
                 (int)playGroundWalker.getLocation().getY()+5,
@@ -162,7 +173,6 @@ public class PlayGroundPainter extends JPanel {
                     && point.getY()>=iterPoint.getY()
                     && point.getY()<=iterPoint.getY()+ 2 * sin60*hexagonSize
                     && cellMap.get(iterPoint).isOnThePath()){
-                cellMap.get(iterPoint).setSelected(true);
                 moveWalker(iterPoint);
 
                 return iterPoint;
@@ -173,7 +183,6 @@ public class PlayGroundPainter extends JPanel {
                     point.getY() >= iterPoint.getY() &&
                     point.getY() <= iterPoint.getY() + 2*sin60*hexagonSize &&
                     cellMap.get(iterPoint).isOnThePath()) {
-                cellMap.get(iterPoint).setSelected(true);
                 moveWalker(iterPoint);
 
 
@@ -190,10 +199,8 @@ public class PlayGroundPainter extends JPanel {
                     point.getX()<=iterPoint.getX() + hexagonSize &&
                     point.getY()>=iterPoint.getY()
                     && point.getY()<=iterPoint.getY()+ 2 * sin60*hexagonSize){
-                //hexagonMap.get(iterPoint).setMouseMoved(true);
                 cellMap.get(iterPoint).setMouseMoved(true);
-                //moveWalker(iterPoint);
-
+                super.repaint();
                 return iterPoint;
             }
             //left area
@@ -201,20 +208,27 @@ public class PlayGroundPainter extends JPanel {
                     point.getX() <= iterPoint.getX() &&
                     point.getY() >= iterPoint.getY() &&
                     point.getY() <= iterPoint.getY() + 2*sin60*hexagonSize ) {
-                //hexagonMap.get(iterPoint).setMouseMoved(true);
                 cellMap.get(iterPoint).setMouseMoved(true);
-
+                super.repaint();
                 return iterPoint;
             }
+
+
         }
         return null;
+    }
+    public void cleanUpMovedCell() {
+        for (Cell cell :cellMap.values()) {
+            cell.setMouseMoved(false);
+        }
+        super.repaint();
     }
 
 
     public  void cleanUpPlayGround(){
         for (Cell cell:cellMap.values()) {
 
-            cell.setSelected(false);
+            cell.setIsBarrierGenerated(false);
             cell.setOnThePath(false);
 
         }
@@ -224,9 +238,9 @@ public class PlayGroundPainter extends JPanel {
     public void generateTemplate() {
         for (Cell cell:cellMap.values()) {
             if(Math.random()< 0.15){
-                cell.setSelected(true);
+                cell.setIsBarrierGenerated(true);
             }else{
-                cell.setSelected(false);
+                cell.setIsBarrierGenerated(false);
             }
         }
         super.repaint();
@@ -293,7 +307,7 @@ public class PlayGroundPainter extends JPanel {
     }
 
     public void moveWalker(Point point){
-        cellMap.get(playGroundWalker.getLocation()).setSelected(false);
+        //cellMap.get(playGroundWalker.getLocation()).setSelected(false);
         playGroundWalker.setLocation(point);
         fight(5);
 
@@ -347,4 +361,6 @@ public class PlayGroundPainter extends JPanel {
         return "{\"count\":\"" + playGroundWalker.getTrophy() + "!\"}";
 
     }
+
+
 }

@@ -7,7 +7,7 @@ public class Cell {
     private Hexagon hexagon;
     private int value;
     private boolean isMouseMoved;
-    private boolean isSelected;
+    private boolean isBarrierGenerated;
     private boolean isOnThePath;
     private boolean isActionAttached;
     private boolean isBarrier;
@@ -20,14 +20,14 @@ public class Cell {
 
     }
 
-    public boolean isSelected() {
-        return isSelected;
+    public boolean isBarrierGenerated() {
+        return isBarrierGenerated;
     }
 
-    public void setSelected(boolean selected) {
+    public void setIsBarrierGenerated(boolean barrier) {
 
         // todo:barrier
-        isSelected = selected;
+        isBarrierGenerated = barrier;
     }
 
     public boolean isMouseMoved() {

@@ -1,11 +1,11 @@
 package edu.easysoft.game.tablet;
 
-import edu.easysoft.game.tablet.Card;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//todo rework it with dialog window
 public class Tablet  extends JPanel {
     List<Card> cardList = new ArrayList<Card>();
     public Tablet(){

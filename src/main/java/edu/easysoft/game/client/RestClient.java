@@ -6,10 +6,8 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.ByteBuffer;
-import java.util.concurrent.Flow;
 
-public class SimpleClient {
+public class RestClient {
 
     public String getRequest(String url) {
         HttpClient client = HttpClient.newHttpClient();
