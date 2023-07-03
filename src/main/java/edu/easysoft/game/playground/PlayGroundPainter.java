@@ -324,6 +324,12 @@ public class PlayGroundPainter extends JPanel {
         playGroundWalker.increaseTrophy(cellMap.get(playGroundWalker.getLocation()).getValue());
         cellMap.get(playGroundWalker.getLocation()).setValue(0);
     }
+    public void spy(){
+        String name = JOptionPane.showInputDialog(this,
+                "What is your name?", "enemy name");
+        JOptionPane.showMessageDialog(this,name);
+
+    }
 
     public void showTablet() {
 
@@ -333,7 +339,6 @@ public class PlayGroundPainter extends JPanel {
         tablet.setLocation(100,100);
 
         this.add(tablet);
-
         super.repaint();
     }
     public boolean revertVisibility(boolean visible){

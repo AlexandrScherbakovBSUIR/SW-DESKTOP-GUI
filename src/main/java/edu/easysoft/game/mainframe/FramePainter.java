@@ -1,6 +1,7 @@
 package edu.easysoft.game.mainframe;
 
 import edu.easysoft.game.client.RestClient;
+import edu.easysoft.game.listener.menuListener.SpyButtonListener;
 import edu.easysoft.game.listener.menuListener.ThrowDiceButtonListener;
 import edu.easysoft.game.listener.playgroundListener.MousePlayGroundEventListener;
 import edu.easysoft.game.listener.menuListener.PlayGroundOperationListener;
@@ -174,11 +175,13 @@ public final class  FramePainter {
         PlayGroundOperationListener showActionListener =
                 new PlayGroundOperationListener(playGroundPainter,"show");
         ThrowDiceButtonListener throwDiceButtonListener = new ThrowDiceButtonListener(playGroundPainter, getClient());
+        SpyButtonListener spyButtonListener = new SpyButtonListener(playGroundPainter);
 
         cleanButton.addActionListener(cleanUpPlayGroundListener);
         generateButton.addActionListener(generateActionListener);
         showTabletButton.addActionListener(showActionListener);
         throwDiceButton.addActionListener(throwDiceButtonListener);
+        spyButton.addActionListener(spyButtonListener);
 
         playGroundPainter.addMouseListener(clickEventListener);
         playGroundPainter.addMouseMotionListener(clickEventListener);
