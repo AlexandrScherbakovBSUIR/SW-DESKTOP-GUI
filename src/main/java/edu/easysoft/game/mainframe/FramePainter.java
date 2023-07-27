@@ -1,10 +1,8 @@
 package edu.easysoft.game.mainframe;
 
 import edu.easysoft.game.client.RestClient;
-import edu.easysoft.game.listener.menuListener.SpyButtonListener;
-import edu.easysoft.game.listener.menuListener.ThrowDiceButtonListener;
+import edu.easysoft.game.listener.menuListener.*;
 import edu.easysoft.game.listener.playgroundListener.MousePlayGroundEventListener;
-import edu.easysoft.game.listener.menuListener.PlayGroundOperationListener;
 import edu.easysoft.game.playground.PlayGroundPainter;
 
 import javax.swing.*;
@@ -176,12 +174,17 @@ public final class  FramePainter {
                 new PlayGroundOperationListener(playGroundPainter,"show");
         ThrowDiceButtonListener throwDiceButtonListener = new ThrowDiceButtonListener(playGroundPainter, getClient());
         SpyButtonListener spyButtonListener = new SpyButtonListener(playGroundPainter);
+        FightButtonListener fightButtonListener = new FightButtonListener(playGroundPainter);
+        EndTurnButtonListener endTurnButtonListener = new EndTurnButtonListener(playGroundPainter);
+
 
         cleanButton.addActionListener(cleanUpPlayGroundListener);
         generateButton.addActionListener(generateActionListener);
         showTabletButton.addActionListener(showActionListener);
         throwDiceButton.addActionListener(throwDiceButtonListener);
         spyButton.addActionListener(spyButtonListener);
+        fightButton.addActionListener(fightButtonListener);
+        endTurnButton.addActionListener(endTurnButtonListener);
 
         playGroundPainter.addMouseListener(clickEventListener);
         playGroundPainter.addMouseMotionListener(clickEventListener);

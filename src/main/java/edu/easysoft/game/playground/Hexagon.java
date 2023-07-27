@@ -134,23 +134,6 @@ public class Hexagon  {
         this.y6 = y6;
     }
 
-/*
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
-
-    public boolean isMouseMoved() {
-        return isMouseMoved;
-    }
-
-    public void setMouseMoved(boolean mouseMoved) {
-        isMouseMoved = mouseMoved;
-    }
-*/
 
     @Override
     public String toString() {

@@ -12,6 +12,7 @@ public class Cell {
     private boolean isActionAttached;
     private boolean isBarrier;
 
+
     private boolean startPoint;
 
     Cell(Hexagon hexagon,int value){

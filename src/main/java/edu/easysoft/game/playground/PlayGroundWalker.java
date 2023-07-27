@@ -1,36 +1,31 @@
 package edu.easysoft.game.playground;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.awt.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class PlayGroundWalker {
+    @JsonProperty("location")
     private Point location;
+    @JsonProperty("trophy")
     private int trophy;
-
 
     public PlayGroundWalker(Point location){
         this.location=location;
 
     }
 
-
-    public Point getLocation() {
-        return location;
-    }
-
-    public void setLocation(Point location) {
-        this.location = location;
-    }
     public void increaseTrophy(int cellValue){
         trophy = trophy + cellValue;
         System.out.println(trophy);
 
     }
 
-    public int getTrophy() {
-        return trophy;
-    }
 
-    public void setTrophy(int trophy) {
-        this.trophy = trophy;
-    }
 }

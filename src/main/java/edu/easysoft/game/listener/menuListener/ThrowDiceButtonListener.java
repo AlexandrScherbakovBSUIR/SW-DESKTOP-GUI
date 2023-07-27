@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 public class ThrowDiceButtonListener implements ActionListener {
     private final int step = 2;
     PlayGroundPainter playGroundPainter;
-    RestClient restClient =new RestClient();
+    RestClient restClient;
     public ThrowDiceButtonListener(PlayGroundPainter playGroundPainter, RestClient restClient){
         this.playGroundPainter = playGroundPainter;
         this.restClient = restClient;

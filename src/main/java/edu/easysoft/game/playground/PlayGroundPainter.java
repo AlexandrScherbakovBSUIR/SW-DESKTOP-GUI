@@ -14,6 +14,9 @@ public class PlayGroundPainter extends JPanel {
     boolean tableVisibility;
     int count = 0;
     private Tablet tablet = new Tablet();
+
+
+
     private PlayGroundWalker  playGroundWalker ;
     Map<Point,Cell> cellMap = new HashMap<>();
     public static double sin60 = Math.sin(Math.toRadians(60));
@@ -58,7 +61,7 @@ public class PlayGroundPainter extends JPanel {
 
         for (Point point: cellMap.keySet()) {
 
-            if(cellMap.get(point).isBarrierGenerated()){
+            if(cellMap.get(point).isBarrier()){
                 graphic2d.fillOval((int) (point.getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
                         (int)point.getY()+5,
                         (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
@@ -73,6 +76,7 @@ public class PlayGroundPainter extends JPanel {
             }
             if(cellMap.get(point).isMouseMoved()){
                 graphic2d.drawOval((int) (point.getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
+
                         (int)point.getY()+5,
                         (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
                         (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
@@ -228,7 +232,7 @@ public class PlayGroundPainter extends JPanel {
     public  void cleanUpPlayGround(){
         for (Cell cell:cellMap.values()) {
 
-            cell.setIsBarrierGenerated(false);
+            cell.setBarrier(false);
             cell.setOnThePath(false);
 
         }
@@ -238,9 +242,9 @@ public class PlayGroundPainter extends JPanel {
     public void generateTemplate() {
         for (Cell cell:cellMap.values()) {
             if(Math.random()< 0.15){
-                cell.setIsBarrierGenerated(true);
+                cell.setBarrier(true);
             }else{
-                cell.setIsBarrierGenerated(false);
+                cell.setBarrier(false);
             }
         }
         super.repaint();
@@ -260,7 +264,7 @@ public class PlayGroundPainter extends JPanel {
 
 
             if(point.getX() - (hexagonSize + Math.round(hexagonSize * cos60))>=40
-                && point.getY() + Math.round(hexagonSize * sin60)<=586)
+                && point.getY() + Math.round(hexagonSize * sin60)<=586 )
                 pointList.add(findMovedCell(new Point(
                         (int) (point.getX() - ((hexagonSize + Math.round(hexagonSize * cos60)))),
                         (int) (point.getY() + Math.round(hexagonSize * sin60)))));
@@ -297,9 +301,11 @@ public class PlayGroundPainter extends JPanel {
 
             for (Point iterPoint: pointList) {
                 int iterStep = step-1;
-                if (!iterPoint.equals(playGroundWalker.getLocation())) { //todo:  barrier
+                if (!iterPoint.equals(playGroundWalker.getLocation())) {
+                    if(cellMap.get(iterPoint).isBarrier()==false)
                     cellMap.get(iterPoint).setOnThePath(true);
                 }
+                if(cellMap.get(iterPoint).isBarrier()==false)
                 findNearCell(iterPoint,iterStep);
             }
         }
@@ -319,8 +325,6 @@ public class PlayGroundPainter extends JPanel {
 
     }
     public void fight(int power){
-        // counter= counter + cell.value;
-        // cell.value = 0;
         playGroundWalker.increaseTrophy(cellMap.get(playGroundWalker.getLocation()).getValue());
         cellMap.get(playGroundWalker.getLocation()).setValue(0);
     }
@@ -341,6 +345,9 @@ public class PlayGroundPainter extends JPanel {
         this.add(tablet);
         super.repaint();
     }
+    public void  repaint(){
+        super.repaint();
+    }
     public boolean revertVisibility(boolean visible){
         this.tableVisibility = ! visible;
         return this.tableVisibility;
@@ -359,6 +366,14 @@ public class PlayGroundPainter extends JPanel {
 
     public void setHexagonSize(int hexagonSize) {
         this.hexagonSize = hexagonSize;
+    }
+
+    public PlayGroundWalker getPlayGroundWalker() {
+        return playGroundWalker;
+    }
+
+    public void setPlayGroundWalker(PlayGroundWalker playGroundWalker) {
+        this.playGroundWalker = playGroundWalker;
     }
 
     public String toJSON() {
