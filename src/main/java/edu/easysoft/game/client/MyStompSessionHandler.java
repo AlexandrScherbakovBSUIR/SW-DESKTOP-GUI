@@ -15,6 +15,7 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
 
     private Logger logger = LogManager.getLogger(MyStompSessionHandler.class);
     PlayGroundPainter playGroundPainter;
+    private static int playerID;
 
     public MyStompSessionHandler(PlayGroundPainter playGroundPainter) {
         this.playGroundPainter = playGroundPainter;
@@ -49,12 +50,14 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
 
     @Override
     public void handleFrame(StompHeaders headers, Object payload) {
-        //Message msg = (Message) payload;
-        System.out.println(payload.getClass());
         GameStateMessage msg = (GameStateMessage) payload;
 
-        logger.info(payload.getClass() );
-        playGroundPainter.setPlayGroundWalker(((GameStateMessage) payload).getPlayGroundWalker());
+        if(!playGroundPainter.getPlayGroundWalker().getLocation()
+                .equals(msg.getPlayGroundWalker().getLocation())        )
+            playGroundPainter.setEnemyWalker(msg.getPlayGroundWalker());
+        if(playerID==0)
+            this.playerID=msg.getPlayerID();
+        System.out.println("id= "+playerID);
         playGroundPainter.repaint();
     }
 
@@ -72,6 +75,8 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
     private GameStateMessage getGameStateMessage(){
         GameStateMessage gameStateMessage = new GameStateMessage();
         gameStateMessage.setPlayGroundWalker(playGroundPainter.getPlayGroundWalker());
+        gameStateMessage.setPlayerID(playerID);
+        System.out.println("id= "+playerID);
 
         return gameStateMessage;
     }

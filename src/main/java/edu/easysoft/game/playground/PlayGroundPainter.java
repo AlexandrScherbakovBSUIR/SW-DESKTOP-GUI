@@ -2,6 +2,8 @@ package edu.easysoft.game.playground;
 
 import edu.easysoft.game.comparator.PointComparator;
 import edu.easysoft.game.tablet.Tablet;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +11,8 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Setter
+@Getter
 public class PlayGroundPainter extends JPanel {
     int hexagonSize = 30;
     boolean tableVisibility;
@@ -17,7 +21,8 @@ public class PlayGroundPainter extends JPanel {
 
 
 
-    private PlayGroundWalker  playGroundWalker ;
+    private PlayGroundWalker  playGroundWalker;
+    private PlayGroundWalker enemyWalker;
     Map<Point,Cell> cellMap = new HashMap<>();
     public static double sin60 = Math.sin(Math.toRadians(60));
     public static double cos60 = Math.cos(Math.toRadians(60));
@@ -84,11 +89,17 @@ public class PlayGroundPainter extends JPanel {
             }
         }
         //drawing player onto playground
+        graphic2d.setColor(Color.red);
+        graphic2d.fillOval((int) (enemyWalker.getLocation().getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
+                (int)enemyWalker.getLocation().getY()+5,
+                (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
+                (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
         graphic2d.setColor(Color.blue);
         graphic2d.fillOval((int) (playGroundWalker.getLocation().getX()-getHexagonSize()* PlayGroundPainter.cos60)+5,
                 (int)playGroundWalker.getLocation().getY()+5,
                 (int) (getHexagonSize()*(2* PlayGroundPainter.cos60+1))-10,
                 (int) ( 2 * getHexagonSize()* PlayGroundPainter.sin60)-10);
+
         graphic2d.setColor(Color.darkGray);
 
 
@@ -135,10 +146,14 @@ public class PlayGroundPainter extends JPanel {
 
 
         if(!cellMap.containsKey(new Point(x1,y1))) {
+
             cellMap.put(new Point(x1, y1),new Cell(new Hexagon(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6),1));
 
             if(playGroundWalker==null){
                 playGroundWalker = new PlayGroundWalker(new Point(x1,y1));
+            }
+            if(enemyWalker==null){
+                enemyWalker = new PlayGroundWalker(new Point(x1,y1));
             }
         }
 
